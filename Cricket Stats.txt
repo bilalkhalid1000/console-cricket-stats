@@ -1,0 +1,783 @@
+//Any other type of file is not being uploaded!!!!!
+
+/*cricketPlayers.txt
+1 Bilal 19 89 12345
+2 Sikandar 20 99 54321
+3 Khizar 11 56 1234
+4 Asad 10 23 300
+1 IronMan 45 56 1256
+2 SuperMan 90 78 9876
+3 BatMan 67 43 3142
+4 Caption 109 90 5467
+1 Hulk 58 88 43453
+2 AntMan 45 32 4432
+3 Maggi 87 66 1287
+4 Knorr 18 58 7644
+*/
+
+/*cricketTeams.txt
+100 PAK 12 39 67
+101 IND 11 22 33
+102 BNG 45 33 11
+*/
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+void mainMenu(void);
+void saving(void);
+void playerRecord(void);
+void teamRecord(void);
+void viewing(void);
+void printPlayer(void);
+void printTeam(void);
+void printTP(int cod);
+void GoBack(void);
+void NewMatch(void);
+
+char P_Name[3][4][20];
+char T_Name[3][20];
+float P_Data[3][4][4];
+float T_Data[3][4];
+
+
+int main()
+{
+	system("MODE 100");
+	mainMenu();
+}
+
+void mainMenu()
+{
+	int v;
+	system("cls");
+	system("color 07");
+	printf("\t\t\t\t\tMAIN MENU\n");
+	printf("____________________________________________________________________________________________________\n");
+	fflush(stdin);
+	printf("What do you want to do?\n\n\t1. Save New Records\n\t2. Edit Record\n\t3. View Records\n\t4. New Match\n\t5. Exit\n\nEnter Your Selection:\t");
+	scanf("%d",&v);
+	
+	if(v == 1)
+	{
+		system("color DF");
+		saving();
+	}
+	
+	if(v == 2)
+	{
+		system("cls");
+		system("color 3F");
+		printf("This menu is not available right now\n");
+		GoBack();
+		//editing();
+	}
+	
+	if(v == 3)
+	{
+		system("color F0");
+		viewing();
+	}
+	
+	if(v == 4)
+	{
+		system("color 5B");
+		NewMatch();
+	}
+	
+	if(v == 5)
+	{
+		system("cls");
+		system("color CF");
+		printf("Do you want to exit (y/n)\t");
+		char c;
+		fflush(stdin);
+		scanf("%c",&c);
+		if(c=='y'||c=='Y')
+			exit(0);
+		else
+			mainMenu();
+	}
+	
+	if(v!=1 && v!=2 && v!=3 && v!=4)
+	{
+		fflush(stdin);
+		printf("Invalid input press any key to restart\n");
+		fflush(stdin);
+		getch();
+		mainMenu();
+	}
+}
+
+void saving(void)
+{
+	system("cls");
+	int v;
+	printf("\t\t\t\tSAVING MENU\n");
+	printf("____________________________________________________________________________________________________\n");
+	printf("Select any of following:\n\n\t1. Create Player\n\t2. Create Team\n\t3. Back to Main Menu\n\nEnter Your Selection:\t");
+	scanf("%d",&v);
+	if(v==1)
+	{
+		system("cls");
+		printf("\t\t\t\t\tPLAYER PROFILE MENU\n");
+		printf("____________________________________________________________________________________________________\n");
+		playerRecord();
+	}
+	if(v==2)
+	{
+		system("cls");
+		printf("\t\t\t\t\tTEAM PROFILE MENU\n");
+		printf("____________________________________________________________________________________________________\n");
+		//printf("This menu is not available right now\n");
+		//GoBack();
+		teamRecord();
+	}
+	if(v==3)
+	{
+		mainMenu();
+	}
+}
+
+void playerRecord(void)
+{
+	int loop,end;
+	float a;
+	char T[20];
+	FILE *g = fopen("cricketTeams.txt","r");
+	if (g == NULL)
+	{
+        printf("Failed to open file\n");
+        printf("Press any key to exit\t");
+		exit(0);
+    }
+	
+	for(end = loop = 0;loop<1;++loop)
+	{
+        if(0==fgets(T, sizeof(T), g))
+		{
+            end = 1;
+            break;
+        }
+    }
+    
+    fclose(g);
+	
+	if(strlen(T) == 0)
+		{
+			printf("\nNo Team to select\nFirst create a team\n");
+			printf("____________________________________________________________________________________________________\n");
+			GoBack();
+		}
+	int i,t;
+	
+	FILE *f = fopen("cricketPlayers.txt","w");
+	if (f == NULL)
+	{
+        printf("Failed to open file\n");
+        printf("Press any key to exit\t");
+		exit(0);
+    }
+	
+	for(t=0;t<3;t++)
+	{
+		printf("\t\t\t\t\t      TEAM %d\n",t+1);
+		printf("____________________________________________________________________________________________________\n");
+		for(i=0;i<4;i++)
+		{
+			printf("\t\t\t\t\t     PLAYER %d\n",i+1);
+			printf("____________________________________________________________________________________________________\n");
+			
+			printf("Player code:\t\t\t\t");
+			P_Data[t][i][0] = i+1;
+			printf("%.0f\n",P_Data[t][i][0]);
+			
+			printf("Player Name:\t\t\t\t");
+			fflush(stdin);
+			gets(P_Name[t][i]);
+			
+			printf("Player age:\t\t\t\t");
+			fflush(stdin);
+			scanf("%f",&P_Data[t][i][1]);
+			
+			printf("Player strike rate:\t\t\t");
+			fflush(stdin);
+			scanf("%f",&P_Data[t][i][2]);
+			
+			printf("Player life time score:\t\t\t");
+			fflush(stdin);
+			scanf("%f",&P_Data[t][i][3]);
+			printf("\n____________________________________________________________________________________________________\n");
+			fprintf(f,"%.0f %s %.0f %.0f %.0f\n",P_Data[t][i][0],P_Name[t][i],P_Data[t][i][1],P_Data[t][i][2],P_Data[t][i][3]);
+			int c=0;
+			while(1)
+			{
+				if(i>=3)
+					break;
+				if(i<3)
+				{
+					char check;
+					printf("Do You Want To Input Another Player(y/n)\t");
+					fflush(stdin);
+					scanf("%c",&check);
+						if(check == 'n' ||check =='N')
+						{
+							printf("____________________________________________________________________________________________________\n");
+							c=-1;
+							break;
+						}
+						if(check == 'y' || check == 'Y')
+						{
+							printf("____________________________________________________________________________________________________\n");
+							break;
+						}
+						else
+						{
+							printf("\nINVALID INPUT");
+							printf("\n");
+							continue;
+						}
+					printf("____________________________________________________________________________________________________\n");
+				}
+			}
+			if(c == -1)
+				break;
+		}
+		
+		int c=0;
+			while(1)
+			{
+				if(t>=2)
+					break;
+				if(t<2)
+				{
+					char check;
+					printf("Do You Want To Input Another Team(y/n)\t");
+					fflush(stdin);
+					scanf("%c",&check);
+					printf("____________________________________________________________________________________________________\n");
+						if(check == 'n' ||check =='N')
+						{
+							c=-1;
+							break;
+						}
+						if(check == 'y' || check == 'Y')
+						{
+							break;
+						}
+						else
+						{
+							printf("\nINVALID INPUT");
+							printf("\n");
+							continue;
+						}
+					printf("____________________________________________________________________________________________________\n");
+				}
+			}
+			if(c == -1)
+				break;
+	}
+	fclose(f);
+	GoBack();
+}
+
+
+void teamRecord(void)
+{
+	FILE *f = fopen("cricketTeams.txt","w");
+	if (f == NULL)
+	{
+        printf("Failed to open file\n");
+        printf("Press any key to exit\t");
+		exit(0);
+    }
+	
+	int i;
+	for(i=0;i<3;i++)
+	{
+		printf("\t\t\t\t\t      TEAM %d\n",i+1);
+		printf("____________________________________________________________________________________________________\n");
+		
+		printf("Team Code:\t\t\t\t");
+		T_Data[i][0] = i+100;
+		printf("%.0f\n",T_Data[i][0]);
+		
+		printf("Name of team:\t\t\t\t");
+		fflush(stdin);
+		gets(T_Name[i]);
+		
+		printf("Test played:\t\t\t\t");
+		fflush(stdin);
+		scanf("%f",&T_Data[i][1]);
+		
+		printf("T-20 played:\t\t\t\t");
+		fflush(stdin);
+		scanf("%f",&T_Data[i][2]);
+		
+		printf("ODI played:\t\t\t\t");
+		fflush(stdin);
+		scanf("%f",&T_Data[i][3]);
+		printf("\n");
+		printf("____________________________________________________________________________________________________\n");
+		fprintf(f,"%.0f %s %.0f %.0f %.0f\n",T_Data[i][0],T_Name[i],T_Data[i][1],T_Data[i][2],T_Data[i][3]);
+		
+		int c=0;
+			while(1)
+			{
+				if(i>=2)
+					break;
+				if(i<2)
+				{
+					char check;
+					printf("Do You Want To Enter Another Team(y/n)\t");
+					fflush(stdin);
+					scanf("%c",&check);
+					printf("____________________________________________________________________________________________________\n");
+						if(check == 'n' ||check =='N')
+						{
+							c=-1;
+							break;
+						}
+						if(check == 'y' || check == 'Y')
+						{
+							break;
+						}
+						else
+						{
+							printf("\n\nINVALID INPUT");
+							continue;
+						}
+					printf("____________________________________________________________________________________________________\n");
+				}
+			}
+			if(c == -1)
+				break;
+			
+	}
+	fclose(f);
+	GoBack();
+}
+
+
+void viewing(void)
+{
+	int v;
+	system("cls");
+	printf("\t\t\t\tVIEWING MENU\n");
+	printf("____________________________________________________________________________________________________\n");
+	printf("Select any of following:\n\n\t1. View Player Profile\n\t2. View Team Profile\n\t3. Back to Main Menu\n\nEnter Your Selection:\t");
+	scanf("%d",&v);
+	
+	if(v==1)
+	{
+		printPlayer();
+	}
+	if(v==2)
+	{
+		printTeam();
+	}
+	if(v==3)
+	{
+		mainMenu();
+	}
+}
+
+
+void printPlayer(void)
+{
+	system("cls");
+	printf("\t\t\t\t\t   PLAYER DETAILS\n\n");
+	printf("____________________________________________________________________________________________________\n");
+	
+	FILE *f = fopen("cricketPlayers.txt","r");
+	if (f == NULL)
+	{
+        printf("Failed to open file\n");
+        printf("Press any key to exit\t");
+		exit(0);
+    }
+    
+	//fscanf(f,"%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f",&P_Data[0][0][0],P_Name[0][0],&P_Data[0][0][1],&P_Data[0][0][2],&P_Data[0][0][3],&P_Data[0][1][0],P_Name[0][1],&P_Data[0][1][1],&P_Data[0][1][2],&P_Data[0][1][3],&P_Data[0][2][0],P_Name[0][2],&P_Data[0][2][1],&P_Data[0][2][2],&P_Data[0][2][3],&P_Data[0][3][0],P_Name[0][3],&P_Data[0][3][1],&P_Data[0][3][2],&P_Data[0][3][3],&P_Data[1][0][0],P_Name[1][0],&P_Data[1][0][1],&P_Data[1][0][2],&P_Data[1][0][3],&P_Data[1][1][0],P_Name[1][1],&P_Data[1][1][1],&P_Data[1][1][2],&P_Data[1][1][3],&P_Data[1][2][0],P_Name[1][2],&P_Data[1][2][1],&P_Data[1][2][2],&P_Data[1][2][3],&P_Data[1][3][0],P_Name[1][3],&P_Data[1][3][1],&P_Data[1][3][2],&P_Data[1][3][3],&P_Data[2][0][0],P_Name[2][0],&P_Data[2][0][1],&P_Data[2][0][2],&P_Data[2][0][3],&P_Data[2][1][0],P_Name[2][1],&P_Data[2][1][1],&P_Data[2][1][2],&P_Data[2][1][3],&P_Data[2][2][0],P_Name[2][2],&P_Data[2][2][1],&P_Data[2][2][2],&P_Data[2][2][3],&P_Data[2][3][0],P_Name[2][3],&P_Data[2][3][1],&P_Data[2][3][2],&P_Data[2][3][3]);
+    
+    int x,y;
+    for(x=0;x<3;x++)
+    {
+    	for(y=0;y<4;y++)
+    	{
+    		fscanf(f,"%f %s %f %f %f\n",&P_Data[x][y][0],P_Name[x][y],&P_Data[x][y][1],&P_Data[x][y][2],&P_Data[x][y][3]);
+		}
+	}
+    
+	fclose(f);
+	
+	int i,j,k;
+
+	for(i=0;i<3;i++)
+	{
+		printf("\t\t\t\t\t      TEAM %d\n",i+1);
+		printf("____________________________________________________________________________________________________\n");
+		printf("NAME\t\tID\tAGE\tSTRIKE RATE\tTOTAL SCORE\n");
+	
+		for(j=0;j<4;j++)
+		{
+			system("ping 127.0.0.1 -n 1 > nul");
+			printf("%s\t",P_Name[i][j]);
+				if(strlen(P_Name[i][j])<=7)
+				{
+					printf("\t");
+				}
+			
+			for(k=0;k<3;k++)
+			{
+				printf("%.0f\t",P_Data[i][j][k]);
+			}
+			printf("\t%.0f\t",P_Data[i][j][3]);
+			
+			printf("\n");
+			
+		}
+		if(i<2)
+			printf("____________________________________________________________________________________________________\n");
+	}
+	printf("____________________________________________________________________________________________________\n");
+	
+	GoBack();
+}
+
+
+void printTeam(void)
+{
+	FILE *f = fopen("cricketTeams.txt","r");
+	if (f == NULL)
+	{
+        printf("Failed to open file\n");
+        printf("Press any key to exit\t");
+		exit(0);
+    }
+    
+	//fscanf(f,"%f %s %f %f %f\n%f %s %f %f %f\n%f %s %f %f %f",&T_Data[0][0],T_Name[0],&T_Data[0][1],&T_Data[0][2],&T_Data[0][3],&T_Data[1][0],T_Name[1],&T_Data[1][1],&T_Data[1][2],&T_Data[1][3],&T_Data[2][0],&T_Name[2],&T_Data[2][1],&T_Data[2][2],&T_Data[2][3]);
+	
+	int x;
+	for(x=0;x<3;x++)
+	{
+		fscanf(f,"%f %s %f %f %f",&T_Data[x][0],T_Name[x],&T_Data[x][1],&T_Data[x][2],&T_Data[x][3]);
+	}
+    fclose(f);
+	
+	int a;
+	system("cls");
+	printf("\t\t\t\t\tTEAM DETAILS\n\n");
+	printf("____________________________________________________________________________________________________\n");
+	printf("NAME\t\tCODE\tTest Played\tODI Played\tT-20 Played\n");
+	int i,j;
+	
+	for(i=0;i<3;i++)
+	{
+		system("ping 127.0.0.1 -n 1 > nul");
+		printf("%s\t",T_Name[i]);
+			if(strlen(T_Name[i])<7)
+			{
+				printf("\t");
+			}
+		for(j=0;j<4;j++)
+		{
+			printf("%.0f\t\t",T_Data[i][j]);
+		}
+		
+		printf("\n");
+	}
+	printf("____________________________________________________________________________________________________\n");
+	
+	
+		char check;
+		printf("\nDo You Want To View Players of Any Team (y/n)\t");
+		fflush(stdin);
+		scanf("%c",&check);
+	
+	if(check == 'y' || check == 'Y')
+	{
+		while(1)
+		{
+			printf("\nTo view players detail of team enter code of team\n\nEnter code:\t");
+			fflush(stdin);
+			scanf("%d",&a);
+			if(a == T_Data[0][0])
+			{
+				printTP(a);
+			}
+			if(a == T_Data[1][0])
+			{
+				printTP(a);
+			}
+			if(a == T_Data[2][0])
+			{
+				printTP(a);
+				
+			}
+			if(a!=1 && a!=2 && a!=3)
+			{
+				printf("\nInvalid code..!!!!");
+				continue;
+			}
+		}
+	}
+	else
+	{
+		GoBack();
+	}
+	
+}
+
+
+void printTP(int cod)
+{
+	FILE *f = fopen("cricketPlayers.txt","r");
+	if (f == NULL)
+	{
+        printf("Failed to open file\n");
+        printf("Press any key to exit\t");
+		exit(0);
+    }
+    
+    int x,y;
+    for(x=0;x<3;x++)
+    {
+    	for(y=0;y<4;y++)
+    	{
+    		fscanf(f,"%f %s %f %f %f\n",&P_Data[x][y][0],P_Name[x][y],&P_Data[x][y][1],&P_Data[x][y][2],&P_Data[x][y][3]);
+		}
+	}
+    
+	fclose(f);
+	
+	int i,j,k;
+	
+	if(cod == T_Data[0][0])
+		i=0;
+	if(cod == T_Data[1][0])
+		i=1;
+	if(cod == T_Data[2][0])
+		i=2;
+	
+	{
+		printf("____________________________________________________________________________________________________\n");
+		printf("\t\t\t\t\tTEAM\t");
+		printf("%s\n",T_Name[i]);
+		printf("____________________________________________________________________________________________________\n");
+		printf("NAME\t\tTEAM\t\tID\tAGE\tSTRIKE RATE\tTOTAL SCORE\n");
+	
+		for(j=0;j<4;j++)
+		{
+			system("ping 127.0.0.1 -n 1 > nul");
+			printf("%s\t",P_Name[i][j]);
+				if(strlen(P_Name[i][j])<=7)
+				{
+					printf("\t");
+				}
+			
+			printf("%s\t",T_Name[i]);
+				if(strlen(T_Name[i])<7)
+				{
+					printf("\t");
+				}
+				
+			for(k=0;k<3;k++)
+			{
+				printf("%.0f\t",P_Data[i][j][k]);
+			}
+			printf("\t%.0f\t",P_Data[i][j][3]);
+			
+			printf("\n");
+			
+		}
+		printf("____________________________________________________________________________________________________\n");
+	}
+	GoBack();
+}
+
+
+void GoBack(void)
+{
+	printf("\nPress Any Key To Go Back TO Main Menu\t");
+	fflush(stdin);
+	getch();
+	mainMenu();
+}
+
+
+void NewMatch(void)
+{
+	system("cls");
+	
+	FILE *f = fopen("cricketTeams.txt","r");
+	if (f == NULL)
+	{
+        printf("Failed to open file\n");
+        printf("Press any key to exit\t");
+		exit(0);
+    }
+	
+	int x;
+	for(x=0;x<3;x++)
+	{
+		fscanf(f,"%f %s %f %f %f",&T_Data[x][0],T_Name[x],&T_Data[x][1],&T_Data[x][2],&T_Data[x][3]);
+	}
+    fclose(f);
+	
+	printf("\t\t\t\t\tNew Match Menu\n");
+	printf("____________________________________________________________________________________________________\n");
+	
+	if(strlen(T_Name[0]) == 0)
+	{
+		printf("\nNo Team to select\nFirst create a team\n");
+		printf("____________________________________________________________________________________________________\n");
+		GoBack();
+	}
+		
+	if((strlen(T_Name[0]) == 0 && strlen(T_Name[1]) == 0) || (strlen(T_Name[0]) == 0 && strlen(T_Name[2]) == 0) || (strlen(T_Name[1]) == 0 && strlen(T_Name[3]) == 0))
+	{
+		printf("\nAtleast two are required for match\n");
+		printf("____________________________________________________________________________________________________\n");
+		GoBack();
+	}
+	
+	printf("Select any two teams");
+	
+	int j,n1,n2;
+		printf("\nTeam Code\t\tTeam Name\n");
+		for(j=0;j<3;j++)
+		{
+			printf("%.0f\t\t",T_Data[j][0]);
+			printf("%s\n",T_Name[j]);
+		}
+		
+	while(1)
+	{
+		printf("\nEnter code of team 1:\t");
+		fflush(stdin);
+		scanf("%d",&n1);
+		printf("\tEnter code of team 2:\t");
+		fflush(stdin);
+		scanf("%d",&n2);
+	
+		if((n1 == 100 || n1 == 101 || n1 == 102) && (n2 == 100 || n2 == 101 || n2 == 102))
+		{
+			int a;
+			fflush(stdin);
+			srand(time(NULL));
+			a=1+(rand()%(4+1-1));
+				
+			if(n1==n2)
+			{
+				printf("\nEnter code of two different teams");
+				continue;
+			}
+			else
+			{
+				printf("\nWait a few seconds for toss.....\n");
+				system("ping 127.0.0.1 -n 3 > nul");
+					
+				if((n1==100 && n2==102)||(n1==102 && n2==100))
+				{
+					if(a==1)
+					{
+						printf("\n%s won the toss and elected to bat first.",T_Name[0]);
+						
+					}
+						if(a==2)
+					{
+						printf("\n%s won the toss and elected to field first.",T_Name[0]);
+					}
+					if(a==3)
+					{
+						printf("\n%s won the toss and elected to bat first.",T_Name[2]);
+					}
+					if(a==4)
+					{
+						printf("\n%s won the toss and elected to field first.",T_Name[2]);
+					}
+				}
+				if((n1==100 && n2==101)||(n1==101 && n2==100))
+				{
+					if(a==1)
+					{
+						printf("\n%s won the toss and elected to bat first.",T_Name[0]);
+					}
+						if(a==2)
+					{
+						printf("\n%s won the toss and elected to field first.",T_Name[0]);
+					}
+					if(a==3)
+					{
+						printf("\n%s won the toss and elected to bat first.",T_Name[1]);
+					}
+					if(a==4)
+					{
+						printf("\n%s won the toss and elected to field first.",T_Name[1]);
+					}
+				}
+				if((n1==101 && n2==102)||(n1==102 && n2==101))
+				{
+					if(a==1)
+					{
+						printf("\n%s won the toss and elected to bat first.",T_Name[2]);
+					}
+						if(a==2)
+					{
+						printf("\n%s won the toss and elected to field first.",T_Name[2]);
+					}
+					if(a==3)
+					{
+						printf("\n%s won the toss and elected to bat first.",T_Name[1]);
+					}
+					if(a==4)
+					{
+						printf("\n%s won the toss and elected to field first.",T_Name[1]);
+					}
+				}
+				system("ping 127.0.0.1 -n 3 > nul");
+				system("cls");
+				printf("\n\nMatch started.....\n");
+				int k;
+				system("ping 127.0.0.1 -n 2 > nul");
+				for(k=0;k<10;k++)
+				{
+					printf("%c%c%c",177,177,177);
+					system("ping 127.0.0.1 -n 2 > nul");
+				}
+				printf("\nMatch ended.....\n\n");
+			}
+			
+			while(1)
+			{
+			
+				printf("\n\n1. Enter results of match\n2. Go to main menu\n\nEnter your selection\t");
+				int m;
+				fflush(stdin);
+				scanf("%d",&m);
+				if(m==1)
+				{
+					system("cls");
+					printf("\nThis option is not avalilable\nTry again later");
+					GoBack();
+				}
+				if(m==2)
+				{
+					GoBack();
+					break;
+				}
+				else
+				{
+					printf("\nNo option is avaliabe for this number\nRe-enter your selection");
+					continue;
+				}
+			}
+		}
+		else
+		{
+			printf("\nNo opetion is avaliabe for this number\nRe-enter your selection from above list");
+			continue;
+		}
+	}
+}
